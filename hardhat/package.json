@@ -1,0 +1,15 @@
+{
+  "name": "hardhat-crowdfunding-nft",
+  "scripts": {
+    "node": "hardhat node",
+    "compile": "hardhat compile",
+    "deploy": "hardhat ignition deploy ignition/modules/crowdfunding.ts",
+    "deploy:sepolia": "npm run deploy -- --network sepolia --verify"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ignition-viem": "^0.14.0",
+    "@openzeppelin/contracts": "^5.0.1",
+    "dotenv": "^16.4.5",
+    "ts-node": "^10.9.2"
+  }
+}

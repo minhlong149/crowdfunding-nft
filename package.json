@@ -1,11 +1,17 @@
 {
   "name": "crowdfunding-nft",
-  "devDependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
-    "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers",
-    "hardhat": "^2.19.0"
-  },
-  "dependencies": {
-    "@openzeppelin/contracts": "^5.0.0"
+  "workspaces": [
+    "hardhat",
+    "nextjs"
+  ],
+  "scripts": {
+    "node": "npm run node --workspace=hardhat",
+    "compile": "npm run compile --workspace=hardhat",
+    "deploy": "npm run deploy --workspace=hardhat",
+    "deploy:sepolia": "npm run deploy:sepolia --workspace=hardhat",
+    "generate": "npm run generate --workspace=nextjs",
+    "dev": "npm run dev --workspace=nextjs",
+    "build": "npm run build --workspace=nextjs",
+    "start": "npm run start --workspace=nextjs"
   }
 }
