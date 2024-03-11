@@ -10,3 +10,4 @@ max_line_length = 80
 
 [*.sol]
 indent_size = 4
+max_line_length = 120

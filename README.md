@@ -1,6 +1,6 @@
 # Crowdfunding NFT
 
-A decentralized crowdfunding application that allows users to create and fund projects using NFTs on the Ethereum blockchain. Built using `Hardhat Ignition`, `Next.js` & `Wagmi`.
+A decentralized crowdfunding application that allows users to create and fund projects using NFTs on the Ethereum blockchain. Built using [`Hardhat Ignition`](https://hardhat.org/ignition), `Next.js` & [`Wagmi`](https://wagmi.sh/react).
 
 ## Getting Started
 
@@ -28,7 +28,7 @@ Import some accounts from the local node to Metamask and start interacting with 
 
 ### Manages ABIs & Generates code with Wagmi CLI
 
-Run the `generate` command to resolve the ABI and generate type-safe React Hooks. Make sure to copy the address of the deployed contracts and paste it to the [`wagmi.config.ts`](nextjs/wagmi.config.ts) file.
+Run the `generate` command to resolve the ABI and generate type-safe React Hooks.
 
 ```bash
 npn run generate
@@ -55,3 +55,9 @@ Now you can deploy and verify the contracts with the following command:
 ```bash
 npn run deploy:sepolia
 ```
+
+> Make sure to copy the address of the deployed contracts and paste it to the [`wagmi.config.ts`](nextjs/wagmi.config.ts) file.
+
+## References
+
+- [ERC-1155: Multi Token Standard](https://docs.openzeppelin.com/contracts/erc1155)
