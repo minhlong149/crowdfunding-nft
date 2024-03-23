@@ -4,6 +4,7 @@
     "node": "hardhat node",
     "compile": "hardhat compile",
     "deploy": "hardhat ignition deploy ignition/modules/crowdfunding.ts",
+    "deploy:init": "hardhat ignition deploy ignition/modules/generator.ts",
     "deploy:sepolia": "npm run deploy -- --network sepolia --verify"
   },
   "devDependencies": {

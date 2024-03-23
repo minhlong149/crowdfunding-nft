@@ -8,6 +8,7 @@
     "node": "npm run node --workspace=hardhat",
     "compile": "npm run compile --workspace=hardhat",
     "deploy": "npm run deploy --workspace=hardhat",
+    "deploy:init": "npm run deploy:init --workspace=hardhat",
     "deploy:sepolia": "npm run deploy:sepolia --workspace=hardhat",
     "generate": "npm run generate --workspace=nextjs",
     "dev": "npm run dev --workspace=nextjs",
