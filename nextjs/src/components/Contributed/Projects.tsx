@@ -1,10 +1,12 @@
 "use client";
 
+import { useAccount } from "wagmi";
 import { useReadCrowdfundingNftGetContributedProjects } from "@/lib/contracts";
 
 export default function ContributedProjects() {
+  const { address } = useAccount();
   const { data, error, isPending } =
-    useReadCrowdfundingNftGetContributedProjects();
+    useReadCrowdfundingNftGetContributedProjects({ account: address });
 
   function handleFundsWithdrawal() {
     // TODO: Allow contributor to withdraw their funds
