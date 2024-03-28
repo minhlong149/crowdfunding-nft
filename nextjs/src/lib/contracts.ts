@@ -182,26 +182,34 @@ export const crowdfundingNftAbi = [
     outputs: [
       {
         name: '',
-        internalType: 'struct CrowdfundingNFT.Contribution[]',
+        internalType: 'struct CrowdfundingNFT.ProjectDetails[]',
         type: 'tuple[]',
         components: [
+          { name: 'id', internalType: 'uint256', type: 'uint256' },
+          { name: 'contributionId', internalType: 'uint256', type: 'uint256' },
           {
-            name: 'project',
-            internalType: 'struct CrowdfundingNFT.Project',
-            type: 'tuple',
-            components: [
-              { name: 'id', internalType: 'uint256', type: 'uint256' },
-              { name: 'name', internalType: 'string', type: 'string' },
-              { name: 'fund', internalType: 'uint256', type: 'uint256' },
-              { name: 'goal', internalType: 'uint256', type: 'uint256' },
-              { name: 'owner', internalType: 'address', type: 'address' },
-              { name: 'released', internalType: 'bool', type: 'bool' },
-            ],
+            name: 'contributionAmount',
+            internalType: 'uint256',
+            type: 'uint256',
           },
-          { name: 'amount', internalType: 'uint256', type: 'uint256' },
+          { name: 'nftId', internalType: 'uint256', type: 'uint256' },
+          { name: 'nftUri', internalType: 'string', type: 'string' },
+          { name: 'ownsNft', internalType: 'bool', type: 'bool' },
+          { name: 'name', internalType: 'string', type: 'string' },
+          { name: 'fund', internalType: 'uint256', type: 'uint256' },
+          { name: 'goal', internalType: 'uint256', type: 'uint256' },
+          { name: 'owner', internalType: 'address', type: 'address' },
+          { name: 'released', internalType: 'bool', type: 'bool' },
         ],
       },
     ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'projectId', internalType: 'uint256', type: 'uint256' }],
+    name: 'getContributionAmount',
+    outputs: [{ name: '', internalType: 'uint256', type: 'uint256' }],
     stateMutability: 'view',
   },
   {
@@ -221,14 +229,30 @@ export const crowdfundingNftAbi = [
   {
     type: 'function',
     inputs: [{ name: 'projectId', internalType: 'uint256', type: 'uint256' }],
+    name: 'getNftOfProject',
+    outputs: [{ name: '', internalType: 'string', type: 'string' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'projectId', internalType: 'uint256', type: 'uint256' }],
     name: 'getProject',
     outputs: [
       {
         name: '',
-        internalType: 'struct CrowdfundingNFT.Project',
+        internalType: 'struct CrowdfundingNFT.ProjectDetails',
         type: 'tuple',
         components: [
           { name: 'id', internalType: 'uint256', type: 'uint256' },
+          { name: 'contributionId', internalType: 'uint256', type: 'uint256' },
+          {
+            name: 'contributionAmount',
+            internalType: 'uint256',
+            type: 'uint256',
+          },
+          { name: 'nftId', internalType: 'uint256', type: 'uint256' },
+          { name: 'nftUri', internalType: 'string', type: 'string' },
+          { name: 'ownsNft', internalType: 'bool', type: 'bool' },
           { name: 'name', internalType: 'string', type: 'string' },
           { name: 'fund', internalType: 'uint256', type: 'uint256' },
           { name: 'goal', internalType: 'uint256', type: 'uint256' },
@@ -246,10 +270,19 @@ export const crowdfundingNftAbi = [
     outputs: [
       {
         name: '',
-        internalType: 'struct CrowdfundingNFT.Project[]',
+        internalType: 'struct CrowdfundingNFT.ProjectDetails[]',
         type: 'tuple[]',
         components: [
           { name: 'id', internalType: 'uint256', type: 'uint256' },
+          { name: 'contributionId', internalType: 'uint256', type: 'uint256' },
+          {
+            name: 'contributionAmount',
+            internalType: 'uint256',
+            type: 'uint256',
+          },
+          { name: 'nftId', internalType: 'uint256', type: 'uint256' },
+          { name: 'nftUri', internalType: 'string', type: 'string' },
+          { name: 'ownsNft', internalType: 'bool', type: 'bool' },
           { name: 'name', internalType: 'string', type: 'string' },
           { name: 'fund', internalType: 'uint256', type: 'uint256' },
           { name: 'goal', internalType: 'uint256', type: 'uint256' },
@@ -328,6 +361,13 @@ export const crowdfundingNftAbi = [
     inputs: [{ name: 'tokenId', internalType: 'uint256', type: 'uint256' }],
     name: 'uri',
     outputs: [{ name: '', internalType: 'string', type: 'string' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    inputs: [{ name: 'projectId', internalType: 'uint256', type: 'uint256' }],
+    name: 'userOwnsNftOfProject',
+    outputs: [{ name: '', internalType: 'bool', type: 'bool' }],
     stateMutability: 'view',
   },
   {
@@ -1378,6 +1418,16 @@ export const useReadCrowdfundingNftGetContributedProjects =
   })
 
 /**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link crowdfundingNftAbi}__ and `functionName` set to `"getContributionAmount"`
+ */
+export const useReadCrowdfundingNftGetContributionAmount =
+  /*#__PURE__*/ createUseReadContract({
+    abi: crowdfundingNftAbi,
+    address: crowdfundingNftAddress,
+    functionName: 'getContributionAmount',
+  })
+
+/**
  * Wraps __{@link useReadContract}__ with `abi` set to __{@link crowdfundingNftAbi}__ and `functionName` set to `"getContributionIdOfProject"`
  */
 export const useReadCrowdfundingNftGetContributionIdOfProject =
@@ -1395,6 +1445,16 @@ export const useReadCrowdfundingNftGetNftIdOfProject =
     abi: crowdfundingNftAbi,
     address: crowdfundingNftAddress,
     functionName: 'getNftIdOfProject',
+  })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link crowdfundingNftAbi}__ and `functionName` set to `"getNftOfProject"`
+ */
+export const useReadCrowdfundingNftGetNftOfProject =
+  /*#__PURE__*/ createUseReadContract({
+    abi: crowdfundingNftAbi,
+    address: crowdfundingNftAddress,
+    functionName: 'getNftOfProject',
   })
 
 /**
@@ -1445,6 +1505,16 @@ export const useReadCrowdfundingNftUri = /*#__PURE__*/ createUseReadContract({
   address: crowdfundingNftAddress,
   functionName: 'uri',
 })
+
+/**
+ * Wraps __{@link useReadContract}__ with `abi` set to __{@link crowdfundingNftAbi}__ and `functionName` set to `"userOwnsNftOfProject"`
+ */
+export const useReadCrowdfundingNftUserOwnsNftOfProject =
+  /*#__PURE__*/ createUseReadContract({
+    abi: crowdfundingNftAbi,
+    address: crowdfundingNftAddress,
+    functionName: 'userOwnsNftOfProject',
+  })
 
 /**
  * Wraps __{@link useWriteContract}__ with `abi` set to __{@link crowdfundingNftAbi}__

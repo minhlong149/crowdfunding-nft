@@ -20,7 +20,6 @@ error ProjectNotReleased();
  */
 contract CrowdfundingNFT is ERC1155URIStorage {
     struct Project {
-        uint256 id;
         string name;
         uint256 fund;
         uint256 goal;
@@ -28,9 +27,18 @@ contract CrowdfundingNFT is ERC1155URIStorage {
         bool released;
     }
 
-    struct Contribution {
-        Project project;
-        uint256 amount;
+    struct ProjectDetails {
+        uint256 id;
+        uint256 contributionId;
+        uint256 contributionAmount;
+        uint256 nftId;
+        string nftUri;
+        bool ownsNft;
+        string name;
+        uint256 fund;
+        uint256 goal;
+        address owner;
+        bool released;
     }
 
     uint256 private _currentProjectIndex;
@@ -81,7 +89,6 @@ contract CrowdfundingNFT is ERC1155URIStorage {
      */
     function announceProject(string memory name, uint256 goal) external {
         _projects[_currentProjectIndex++] = Project({
-            id: _currentProjectIndex,
             name: name,
             fund: 0,
             goal: goal,
@@ -141,8 +148,8 @@ contract CrowdfundingNFT is ERC1155URIStorage {
      * @dev Iternal function to get all the projects from the `_projects` mapping.
      * @return List of all projects that have been announced.
      */
-    function getProjects() public view returns (Project[] memory) {
-        Project[] memory projects = new Project[](_currentProjectIndex);
+    function getProjects() public view returns (ProjectDetails[] memory) {
+        ProjectDetails[] memory projects = new ProjectDetails[](_currentProjectIndex);
 
         for (uint256 projectId = 0; projectId < _currentProjectIndex; projectId++) {
             projects[projectId] = getProject(projectId);
@@ -155,19 +162,15 @@ contract CrowdfundingNFT is ERC1155URIStorage {
      * @dev Find all the projects with the `backersTokenId` that the user owns
      * @return List of all projects that the user has contributed to
      */
-    function getContributedProjects() public view returns (Contribution[] memory) {
+    function getContributedProjects() public view returns (ProjectDetails[] memory) {
         uint256 totalContributions = getTotalContributions();
-        Contribution[] memory contributedProjects = new Contribution[](totalContributions);
+        ProjectDetails[] memory contributedProjects = new ProjectDetails[](totalContributions);
 
         for (uint256 projectId = 0; projectId < _currentProjectIndex; projectId++) {
             if (userContributedToProject(projectId)) {
-                contributedProjects[--totalContributions] = Contribution({
-                    project: getProject(projectId),
-                    amount: balanceOf(msg.sender, getContributionIdOfProject(projectId))
-                });
+                contributedProjects[--totalContributions] = getProject(projectId);
             }
         }
-
         return contributedProjects;
     }
 
@@ -191,8 +194,33 @@ contract CrowdfundingNFT is ERC1155URIStorage {
     /**
      * @return The details of the project with the given `projectId`
      */
-    function getProject(uint256 projectId) public view returns (Project memory) {
-        return _projects[projectId];
+    function getProject(uint256 projectId) public view returns (ProjectDetails memory) {
+        return
+            ProjectDetails({
+                id: projectId,
+                contributionId: getContributionIdOfProject(projectId),
+                nftId: getNftIdOfProject(projectId),
+                nftUri: getNftOfProject(projectId),
+                ownsNft: userOwnsNftOfProject(projectId),
+                contributionAmount: getContributionAmount(projectId),
+                name: _projects[projectId].name,
+                fund: _projects[projectId].fund,
+                goal: _projects[projectId].goal,
+                owner: _projects[projectId].owner,
+                released: _projects[projectId].released
+            });
+    }
+
+    /**
+     * @return Project's asset URI after the project has been released
+     */
+    function getNftOfProject(uint256 projectId) public view returns (string memory) {
+        // If the token is not minted yet, return an empty string
+        if (!_projects[projectId].released) {
+            return "";
+        }
+
+        return uri(getNftIdOfProject(projectId));
     }
 
     /**
@@ -210,10 +238,22 @@ contract CrowdfundingNFT is ERC1155URIStorage {
     }
 
     /**
+     * @dev Get the amount of fungible tokens that the user owns for a project
+     * @return User's contribution amount for a project
+     */
+    function getContributionAmount(uint256 projectId) public view returns (uint256) {
+        return balanceOf(msg.sender, getContributionIdOfProject(projectId));
+    }
+
+    /**
      * @dev Check if the user owns any fungible tokens of a project
      * @return True if the user has contributed to the project with the given `projectId`
      */
     function userContributedToProject(uint256 projectId) internal view returns (bool) {
-        return balanceOf(msg.sender, getContributionIdOfProject(projectId)) > 0;
+        return getContributionAmount(projectId) > 0;
+    }
+
+    function userOwnsNftOfProject(uint256 projectId) public view returns (bool) {
+        return balanceOf(msg.sender, getNftIdOfProject(projectId)) == 1;
     }
 }
