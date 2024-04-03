@@ -11,7 +11,7 @@ import WithdrawProject from "./WithdrawProject";
 
 export default function ProjectDetails(props: { id: bigint }) {
   const { address } = useAccount();
-  const { data, isPending, error } = useReadCrowdfundingNftGetProject({
+  const { data, isPending, error, refetch } = useReadCrowdfundingNftGetProject({
     args: [props.id],
     account: address,
   });
@@ -26,6 +26,7 @@ export default function ProjectDetails(props: { id: bigint }) {
 
   const projectContextValue: ProjectContextType = {
     project: data,
+    reloadProject: refetch,
   };
 
   // TODO: Check if the project exists

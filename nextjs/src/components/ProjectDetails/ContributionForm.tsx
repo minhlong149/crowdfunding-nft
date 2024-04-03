@@ -2,14 +2,20 @@
 
 import { ProjectContext } from "@/lib/context";
 import { useWriteCrowdfundingNftContributeToProject } from "@/lib/contracts";
-import { FormEvent, useContext } from "react";
+import { FormEvent, useContext, useEffect } from "react";
 import { useAccount } from "wagmi";
 
 export default function ContributionForm() {
-  const { project } = useContext(ProjectContext);
+  const { project, reloadProject } = useContext(ProjectContext);
   const { isConnected } = useAccount();
-  const { writeContract, error, isPending } =
+  const { writeContract, data, error, isPending } =
     useWriteCrowdfundingNftContributeToProject();
+
+  useEffect(() => {
+    if (!error) {
+      reloadProject();
+    }
+  }, [data]);
 
   if (!isConnected) {
     return <></>;
