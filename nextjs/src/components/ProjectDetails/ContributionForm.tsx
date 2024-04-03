@@ -1,12 +1,11 @@
 "use client";
 
-import { FormEvent } from "react";
+import { ProjectContext } from "@/lib/context";
+import { FormEvent, useContext } from "react";
 import { useAccount } from "wagmi";
 
-export default function ContributionForm(project: {
-  id: bigint;
-  released: boolean;
-}) {
+export default function ContributionForm() {
+  const { project } = useContext(ProjectContext);
   const { isConnected } = useAccount();
 
   if (!isConnected) {

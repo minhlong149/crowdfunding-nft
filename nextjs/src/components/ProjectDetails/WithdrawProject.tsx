@@ -1,11 +1,11 @@
 "use client";
 
+import { ProjectContext } from "@/lib/context";
+import { useContext } from "react";
 import { useAccount } from "wagmi";
 
-export default function WithdrawProject(project: {
-  id: bigint;
-  released: boolean;
-}) {
+export default function WithdrawProject() {
+  const { project } = useContext(ProjectContext);
   const { isConnected } = useAccount();
 
   if (!isConnected) {

@@ -1,5 +1,6 @@
 "use client";
 
+import { ProjectContext, ProjectContextType } from "@/lib/context";
 import { useReadCrowdfundingNftGetProject } from "@/lib/contracts";
 import { useAccount } from "wagmi";
 
@@ -10,12 +11,10 @@ import WithdrawProject from "./WithdrawProject";
 
 export default function ProjectDetails(props: { id: bigint }) {
   const { address } = useAccount();
-
-  const {
-    data: project,
-    isPending,
-    error,
-  } = useReadCrowdfundingNftGetProject({ args: [props.id], account: address });
+  const { data, isPending, error } = useReadCrowdfundingNftGetProject({
+    args: [props.id],
+    account: address,
+  });
 
   if (isPending) {
     return <p>Loading...</p>;
@@ -25,17 +24,23 @@ export default function ProjectDetails(props: { id: bigint }) {
     return <p>Error: {error.message}</p>;
   }
 
+  const projectContextValue: ProjectContextType = {
+    project: data,
+  };
+
   // TODO: Check if the project exists
 
   return (
     <div>
-      <h2>{project.name}</h2>
-      <p>Created by: {project.owner}</p>
+      <h2>{data.name}</h2>
+      <p>Created by: {data.owner}</p>
 
-      <FundingProgress {...project} />
-      <ContributionForm {...project} />
-      <WithdrawProject {...project} />
-      <ReleaseProject {...project} />
+      <ProjectContext.Provider value={projectContextValue}>
+        <FundingProgress/>
+        <ContributionForm/>
+        <WithdrawProject/>
+        <ReleaseProject/>
+      </ProjectContext.Provider>
     </div>
   );
 }

@@ -1,12 +1,11 @@
 "use client";
 
+import { ProjectContext } from "@/lib/context";
+import { useContext } from "react";
 import { useAccount } from "wagmi";
 
-export default function ReleaseProject(project: {
-  id: bigint;
-  owner: string;
-  released: boolean;
-}) {
+export default function ReleaseProject() {
+  const { project } = useContext(ProjectContext);
   const { address } = useAccount();
 
   if (project.released) {

@@ -1,4 +1,8 @@
-export default function FundingProgress(project: { fund: bigint; goal: bigint }) {
+import { ProjectContext } from "@/lib/context";
+import { useContext } from "react";
+
+export default function FundingProgress() {
+  const { project } = useContext(ProjectContext);
   const fund = Number(project.fund);
   const goal = Number(project.goal);
   const percentage = ((fund / goal) * 100).toFixed(2);
