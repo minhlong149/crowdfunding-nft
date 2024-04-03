@@ -1,12 +1,15 @@
 "use client";
 
 import { ProjectContext } from "@/lib/context";
+import { useWriteCrowdfundingNftContributeToProject } from "@/lib/contracts";
 import { FormEvent, useContext } from "react";
 import { useAccount } from "wagmi";
 
 export default function ContributionForm() {
   const { project } = useContext(ProjectContext);
   const { isConnected } = useAccount();
+  const { writeContract, error, isPending } =
+    useWriteCrowdfundingNftContributeToProject();
 
   if (!isConnected) {
     return <></>;
@@ -16,9 +19,18 @@ export default function ContributionForm() {
     return <></>;
   }
 
-  async function handleFund(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    // TODO: Allow user to contribute to a project
+  function handleFund(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+    const contribution = formData.get("contribution") as string;
+
+    writeContract({
+      args: [project.id],
+      value: BigInt(contribution),
+    });
+
+    e.currentTarget.reset();
   }
 
   return (
@@ -29,9 +41,12 @@ export default function ContributionForm() {
           type="number"
           name="contribution"
           placeholder="Contribute amount"
+          required
         />
-        <input type="submit" value="Fund"/>
+        <input type="submit" value="Fund" disabled={isPending}/>
       </fieldset>
+
+      {error && <p>Error: {error.message}</p>}
     </form>
   );
 }
