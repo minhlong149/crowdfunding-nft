@@ -5,6 +5,7 @@ import { useAccount } from "wagmi";
 
 import ContributionForm from "./ContributionForm";
 import FundingProgress from "./FundingProgress";
+import WithdrawProject from "./WithdrawProject";
 
 export default function ProjectDetails(props: { id: bigint }) {
   const { address } = useAccount();
@@ -32,6 +33,7 @@ export default function ProjectDetails(props: { id: bigint }) {
 
       <FundingProgress {...project} />
       <ContributionForm {...project} />
+      <WithdrawProject {...project} />
     </div>
   );
 }
