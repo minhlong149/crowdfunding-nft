@@ -1,12 +1,21 @@
 "use client";
 
 import { ProjectContext } from "@/lib/context";
-import { useContext } from "react";
+import { useWriteCrowdfundingNftWithdrawFromProject } from "@/lib/contracts";
+import { useContext, useEffect } from "react";
 import { useAccount } from "wagmi";
 
 export default function WithdrawProject() {
-  const { project } = useContext(ProjectContext);
+  const { project, reloadProject } = useContext(ProjectContext);
   const { isConnected } = useAccount();
+  const { writeContract, data, error, isPending } =
+    useWriteCrowdfundingNftWithdrawFromProject();
+
+  useEffect(() => {
+    if (!error) {
+      reloadProject();
+    }
+  }, [data]);
 
   if (!isConnected) {
     return <></>;
@@ -17,14 +26,17 @@ export default function WithdrawProject() {
   }
 
   function handleWithdraw() {
-    // TODO: Allow contributor to withdraw their funds
+    writeContract({ args: [project.id] });
   }
 
   // TODO: Check if the user has contributed to the project
   // and display the amount they have contributed
   return (
     <div>
-      <button onClick={handleWithdraw}>Withdraw</button>
+      <button onClick={handleWithdraw} disabled={isPending}>
+        Withdraw
+      </button>
+      {error && <p>Error: {error.message}</p>}
     </div>
   );
 }
