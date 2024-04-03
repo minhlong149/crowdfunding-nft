@@ -1,6 +1,8 @@
 import Header from "@/components/Header";
 import EtherProviders from "@/components/EtherProviders";
 
+import "@/app/pico.scss"
+
 export default function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en">
