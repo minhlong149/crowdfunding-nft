@@ -10,7 +10,11 @@ export default function ProjectContributionForm(props: { projectId: bigint }) {
   function addContribution(e: FormEvent<HTMLFormElement>) {
     // TODO: Allow user to contribute to a project
     e.preventDefault();
-    writeContract({ args: [props.projectId] });
+
+    const formData = new FormData(e.currentTarget);
+    const contribution = formData.get("contribution") as string;
+
+    writeContract({ args: [props.projectId], value: BigInt(contribution) });
   }
 
   return (
@@ -18,9 +22,7 @@ export default function ProjectContributionForm(props: { projectId: bigint }) {
       <input type="number" />
       <button type="submit">Contribute</button>
       <div>
-        <button disabled={isPending} type="submit">
-          {isPending ? "Contributing..." : "Done"}
-        </button>
+        <label>{isPending ? "Contributing..." : "Done"}</label>
 
         {error && <span>Error: {error.message}</span>}
       </div>
