@@ -25,11 +25,11 @@ export default function ContributedProjects() {
       <h2>Contributed Projects</h2>
       <p>Projects you've contributed to</p>
       <table>
-        {data.map(({ project, donation }, index) => (
+        {data.map((project, index) => (
           <tr key={index}>
             <th>{project.name}</th>
             <th>{project.owner}</th>
-            <th>{donation.amount.toString()}</th>
+            <th>{project.contributionAmount.toString()}</th>
             <th>
               {project.fund.toString()}/{project.goal.toString()}
             </th>

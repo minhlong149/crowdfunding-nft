@@ -1,6 +1,6 @@
 # Crowdfunding NFT
 
-A decentralized crowdfunding application that allows users to create and fund projects using NFTs on the Ethereum blockchain. Built using `Hardhat Ignition`, `Next.js` & `Wagmi`.
+A decentralized crowdfunding application that allows users to create and fund projects using NFTs on the Ethereum blockchain. Built using [`Hardhat Ignition`](https://hardhat.org/ignition), `Next.js` & [`Wagmi`](https://wagmi.sh/react).
 
 ## Getting Started
 
@@ -10,7 +10,7 @@ Hardhat comes built-in with a local Ethereum network node designed for developme
 npn run node
 ```
 
-To execute your deployments, you need to use the `ignition deploy` task. In a new terminal, run the following command:
+To execute your deployments, you need to use the `ignition deploy` task. In a new terminal, run the following command to deploy the contracts:
 
 ```bash
 npn run deploy
@@ -24,16 +24,17 @@ npn run dev
 
 Import some accounts from the local node to Metamask and start interacting with the contract.
 
-> If you got the error "Nonce too high" when making transactions (which you most likely will), just reset your account in the Metamask settings. This is caused by the local node not being able to keep track of the nonces.
-
 ### Manages ABIs & Generates code with Wagmi CLI
 
-Run the `generate` command to resolve the ABI and generate type-safe React Hooks. Make sure to copy the address of the deployed contracts and paste it to the [`wagmi.config.ts`](nextjs/wagmi.config.ts) file.
+After deploying the contracts, the ABIs will be saved in the `hardhat/artifacts` folder. Run the `generate` command to resolve these ABIs and generate type-safe React Hooks.
 
 ```bash
 npn run generate
 ```
 
+The generated code will be saved in the `nextjs/src/contracts.ts` file. Check out the configuration options at [`wagmi.config.ts`](nextjs/wagmi.config.ts).
+
+> [!CAUTION]
 > If you make changes to the contracts, you will need to run the `deploy` command again, then run the `generate` command to update the ABIs and the generated code.
 
 ### Deploying & Verifying on the Sepolia testnet
@@ -55,3 +56,19 @@ Now you can deploy and verify the contracts with the following command:
 ```bash
 npn run deploy:sepolia
 ```
+
+> [!IMPORTANT]
+> Make sure to copy the address of the deployed contracts to the [`wagmi.config.ts`](nextjs/wagmi.config.ts) file, then run the `generate` command to update the contract addresses.
+
+## Known Issues
+
+- `Nonce too high` [Reset your Metamask Account](https://support.metamask.io/hc/en-us/articles/360015488891-How-to-clear-your-account-activity-reset-account)
+- `ENOWORKSPACES` Fix this [issue](https://github.com/vercel/next.js/issues/47121#issuecomment-1499044345) by disable [Next Telemetry](https://nextjs.org/telemetry)
+
+## References
+
+- [ERC1155 - OpenZeppelin](https://docs.openzeppelin.com/contracts/erc1155)
+- [Hardhat Ignition Modules](https://hardhat.org/ignition/docs/guides/creating-modules)
+- [Manage ABIs - Wagmi CLI](https://wagmi.sh/cli)
+- [Read from Contract - Wagmi](https://wagmi.sh/react/guides/read-from-contract)
+- [Write to Contract - Wagmi](https://wagmi.sh/react/guides/write-to-contract)
