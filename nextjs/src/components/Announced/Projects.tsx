@@ -1,14 +1,19 @@
 "use client";
 
-import { useReadCrowdfundingNftGetProjects } from "@/lib/contracts";
+import {
+  useReadCrowdfundingNftGetProjects,
+  useWriteCrowdfundingNftReleaseProject,
+} from "@/lib/contracts";
 import { useAccount } from "wagmi";
 
 export default function AnnouncedProjects() {
   const { address } = useAccount();
   const { data, error, isPending } = useReadCrowdfundingNftGetProjects();
+  const { writeContract } = useWriteCrowdfundingNftReleaseProject();
 
-  function releaseProject() {
+  function handleReleaseProject(projectID: bigint) {
     // TODO: Allow owner to release their projects
+    writeContract({ args: [projectID, "hehehe"] });
   }
 
   if (isPending) {
@@ -34,7 +39,7 @@ export default function AnnouncedProjects() {
                 {project.fund.toString()}/{project.goal.toString()}
               </th>
               <th>
-                <button onClick={releaseProject} disabled={project.released}>
+                <button onClick={() => handleReleaseProject(project.id)} disabled={project.released}>
                   Release
                 </button>
               </th>

@@ -1,15 +1,20 @@
 "use client";
 
 import { useAccount } from "wagmi";
-import { useReadCrowdfundingNftGetContributedProjects } from "@/lib/contracts";
+import {
+  useReadCrowdfundingNftGetContributedProjects,
+  useWriteCrowdfundingNftWithdrawFromProject,
+} from "@/lib/contracts";
 
 export default function ContributedProjects() {
   const { address } = useAccount();
   const { data, error, isPending } =
     useReadCrowdfundingNftGetContributedProjects({ account: address });
+  const { writeContract } = useWriteCrowdfundingNftWithdrawFromProject();
 
-  function handleFundsWithdrawal() {
+  function handleFundsWithdrawal(projectId: bigint) {
     // TODO: Allow contributor to withdraw their funds
+    writeContract({ args: [projectId] });
   }
 
   if (isPending) {
@@ -35,7 +40,7 @@ export default function ContributedProjects() {
             </th>
             <th>
               <button
-                onClick={handleFundsWithdrawal}
+                onClick={() => handleFundsWithdrawal(project.id)}
                 disabled={project.released}
               >
                 Withdraw
