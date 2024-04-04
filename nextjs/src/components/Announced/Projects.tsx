@@ -12,7 +12,6 @@ export default function AnnouncedProjects() {
   const { writeContract } = useWriteCrowdfundingNftReleaseProject();
 
   function handleReleaseProject(projectID: bigint) {
-    // TODO: Allow owner to release their projects
     writeContract({ args: [projectID, "hehehe"] });
   }
 

@@ -8,7 +8,6 @@ export default function ProjectContributionForm(props: { projectId: bigint }) {
     useWriteCrowdfundingNftContributeToProject();
 
   function addContribution(e: FormEvent<HTMLFormElement>) {
-    // TODO: Allow user to contribute to a project
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);

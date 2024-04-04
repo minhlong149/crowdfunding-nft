@@ -13,7 +13,6 @@ export default function ContributedProjects() {
   const { writeContract } = useWriteCrowdfundingNftWithdrawFromProject();
 
   function handleFundsWithdrawal(projectId: bigint) {
-    // TODO: Allow contributor to withdraw their funds
     writeContract({ args: [projectId] });
   }
 
