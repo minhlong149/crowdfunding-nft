@@ -6,3 +6,7 @@ export interface ProjectDetails {
   owner: `0x${string}`;
   released: boolean;
 }
+
+export interface NftAsset {
+  cid: string;
+}
