@@ -4,6 +4,7 @@ import { ProjectContext } from "@/lib/context";
 import { useWriteCrowdfundingNftReleaseProject } from "@/lib/contracts";
 import { FormEvent, useContext, useEffect } from "react";
 import { useAccount } from "wagmi";
+import NftAsset from "./NftAsset";
 
 export default function ReleaseProject() {
   const { project, reloadProject } = useContext(ProjectContext);
@@ -18,8 +19,7 @@ export default function ReleaseProject() {
   }, [data]);
 
   if (project.released) {
-    // TODO: Render the NFT based on its type (image, video, etc.)
-    return <p>Project released!</p>;
+    return <NftAsset />;
   }
 
   if (address !== project.owner) {
