@@ -2,7 +2,7 @@
 
 import { ProjectContext } from "@/lib/context";
 import { useWriteCrowdfundingNftReleaseProject } from "@/lib/contracts";
-import { FormEvent, useContext, useEffect } from "react";
+import { FormEvent, useContext, useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import NftAsset from "./NftAsset";
 
@@ -11,6 +11,8 @@ export default function ReleaseProject() {
   const { address } = useAccount();
   const { writeContract, data, error, isPending } =
     useWriteCrowdfundingNftReleaseProject();
+
+  const [useFileUpload, setUseFileUpload] = useState(false);
 
   useEffect(() => {
     if (!error) {
@@ -43,13 +45,27 @@ export default function ReleaseProject() {
 
   return (
     <form onSubmit={handleRelease}>
+      <h4>Release project</h4>
       <fieldset role="group">
         <input
+          type={useFileUpload ? "file" : "text"}
           name="assetUri"
           placeholder="URI of the project's asset"
           required
         />
         <input type="submit" value="Release" disabled={isPending} />
+      </fieldset>
+
+      <fieldset>
+        <label>
+          <input
+            type="checkbox"
+            role="switch"
+            checked={useFileUpload}
+            onChange={() => setUseFileUpload(!useFileUpload)}
+          />
+          I want to upload a file
+        </label>
       </fieldset>
 
       {error && <p>Error: {error.message}</p>}
