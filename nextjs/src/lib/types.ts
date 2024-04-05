@@ -1,5 +1,10 @@
 export interface ProjectDetails {
   id: bigint;
+  contributionId: bigint;
+  contributionAmount: bigint;
+  nftId: bigint;
+  nftUri: string;
+  ownsNft: boolean;
   name: string;
   fund: bigint;
   goal: bigint;
