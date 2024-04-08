@@ -16,6 +16,12 @@ To execute your deployments, you need to use the `ignition deploy` task. In a ne
 npn run deploy
 ```
 
+Get an API key from [Pinata](https://app.pinata.cloud/developers/api-keys), then create a `.env.local` file with the following content:
+
+```bash
+PINATA_JWT=YOUR_PINATA_JWT
+```
+
 Finally, run the Next.js development server with the following command, a development server will start at <http://localhost:3000>
 
 ```bash
@@ -72,3 +78,5 @@ npn run deploy:sepolia
 - [Manage ABIs - Wagmi CLI](https://wagmi.sh/cli)
 - [Read from Contract - Wagmi](https://wagmi.sh/react/guides/read-from-contract)
 - [Write to Contract - Wagmi](https://wagmi.sh/react/guides/write-to-contract)
+- [Pinning Files to IPFS using Pinata API](https://docs.pinata.cloud/pinning/pinning-files#using-the-api)
+- [Retrieving a CID with IPFS](https://docs.ipfs.tech/quickstart/retrieve/)
