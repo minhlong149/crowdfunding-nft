@@ -1,8 +1,20 @@
+import { pinFile } from "@/lib/pinata";
 import { NftAsset } from "@/lib/types";
-import { NextResponse, NextRequest } from "next/server";
 
-export async function POST(request: NextRequest) {
-  // TODO: Replace this with the CID of the uploaded file
-  const cid = "bafybeicn7i3soqdgr7dwnrwytgq4zxy7a5jpkizrvhm5mv6bgjd32wm3q4/welcome-to-IPFS.jpg";
-  return NextResponse.json<NftAsset>({ cid }, { status: 201 });
+export const config = { api: { bodyParser: false } };
+
+export async function POST(request: Request) {
+  try {
+    const formData = await request.formData();
+    const file = formData.get("file");
+    if (!(file instanceof File)) {
+      return Response.json({ error: "Invalid file" }, { status: 400 });
+    }
+
+    const data: NftAsset = { cid: await pinFile(file) };
+    return Response.json(data, { status: 201 });
+  } catch (error) {
+    console.log(error);
+    return Response.json({ error: "Internal Server Error" }, { status: 500 });
+  }
 }
