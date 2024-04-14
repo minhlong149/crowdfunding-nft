@@ -2,6 +2,7 @@
 
 import ProjectContributionForm from "@/components/Projects/ContributionForm";
 import { useReadCrowdfundingNftGetProjects } from "@/lib/contracts";
+import Link from "next/link";
 
 export default function Projects() {
   const { data, error, isPending } = useReadCrowdfundingNftGetProjects();
@@ -20,7 +21,9 @@ export default function Projects() {
       <table>
         {data.map((project) => (
           <tr key={project.id}>
-            <th>{project.name}</th>
+            <th>
+              <Link href={`/projects/${project.id}`}>{project.name}</Link>
+            </th>
             <th>{project.owner}</th>
             <th>
               {project.fund.toString()}/{project.goal.toString()}

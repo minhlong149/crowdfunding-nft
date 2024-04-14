@@ -20,11 +20,8 @@ export default function ProjectContributionForm(props: { projectId: bigint }) {
     <form onSubmit={addContribution}>
       <input type="number" name={"contribution"} />
       <button type="submit">Contribute</button>
-      <div>
-        <label>{isPending ? "Contributing..." : "Done"}</label>
 
-        {error && <span>Error: {error.message}</span>}
-      </div>
+      {error && <span>Error: {error.message}</span>}
     </form>
   );
 }
