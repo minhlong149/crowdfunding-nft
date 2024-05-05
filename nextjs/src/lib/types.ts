@@ -12,6 +12,6 @@ export interface ProjectDetails {
   released: boolean;
 }
 
-export interface NftAsset {
+export interface NftAssetCid {
   cid: string;
 }

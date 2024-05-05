@@ -1,5 +1,5 @@
 import { pinFile } from "@/lib/pinata";
-import { NftAsset } from "@/lib/types";
+import { NftAssetCid } from "@/lib/types";
 
 export const config = { api: { bodyParser: false } };
 
@@ -11,7 +11,7 @@ export async function POST(request: Request) {
       return Response.json({ error: "Invalid file" }, { status: 400 });
     }
 
-    const data: NftAsset = { cid: await pinFile(file) };
+    const data: NftAssetCid = { cid: await pinFile(file) };
     return Response.json(data, { status: 201 });
   } catch (error) {
     console.log(error);

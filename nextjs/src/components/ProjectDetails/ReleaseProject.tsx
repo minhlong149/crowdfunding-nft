@@ -21,7 +21,7 @@ export default function ReleaseProject() {
   }, [data]);
 
   if (project.released) {
-    return <NftAsset />;
+    return <NftAsset asset={{ cid: project.nftUri }} />;
   }
 
   if (address !== project.owner) {
