@@ -8,6 +8,7 @@ import ContributionForm from "./ContributionForm";
 import FundingProgress from "./FundingProgress";
 import ReleaseProject from "./ReleaseProject";
 import WithdrawProject from "./WithdrawProject";
+import TransactionHistory from "./TransactionHistory";
 
 export default function ProjectDetails(props: { id: bigint }) {
   const { address } = useAccount();
@@ -37,10 +38,11 @@ export default function ProjectDetails(props: { id: bigint }) {
       <p>Created by: {data.owner}</p>
 
       <ProjectContext.Provider value={projectContextValue}>
-        <FundingProgress/>
-        <ContributionForm/>
-        <WithdrawProject/>
-        <ReleaseProject/>
+        <FundingProgress />
+        <ContributionForm />
+        <WithdrawProject />
+        <ReleaseProject />
+        <TransactionHistory />
       </ProjectContext.Provider>
     </div>
   );
