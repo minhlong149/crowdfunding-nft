@@ -45,6 +45,8 @@ contract CrowdfundingNFT is ERC1155URIStorage {
 
     mapping(uint256 => Project) private _projects;
 
+    event ContributionLog(uint256 projectId, address contributor, int256 amount);
+
     modifier isOwner(uint256 projectId) {
         if (_projects[projectId].owner != msg.sender) {
             revert UnauthorizedAccess();
@@ -108,6 +110,8 @@ contract CrowdfundingNFT is ERC1155URIStorage {
         _mint(msg.sender, getContributionIdOfProject(projectId), contribution, "");
 
         project.fund += contribution;
+
+        emit ContributionLog(projectId, msg.sender, int(contribution));
     }
 
     /**
@@ -123,6 +127,8 @@ contract CrowdfundingNFT is ERC1155URIStorage {
         _burn(msg.sender, getContributionIdOfProject(projectId), contribution);
 
         project.fund -= contribution;
+
+        emit ContributionLog(projectId, msg.sender, -int(contribution));
     }
 
     /**
