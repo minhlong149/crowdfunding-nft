@@ -29,6 +29,28 @@ export default function NftAsset({ asset }: NftAssetPropS) {
     );
   }
 
+  if (fileType.startsWith("audio/")) {
+    return (
+      <audio controls>
+        <source src={asset.cid} type={fileType} />
+        Trình duyệt của bạn không hỗ trợ thẻ audio.
+      </audio>
+    );
+  }
+
+  if (fileType === "application/pdf") {
+    return (
+      <object
+        data={asset.cid}
+        type="application/pdf"
+        width="100%"
+        height="600px"
+      >
+        Trình duyệt của bạn không hỗ trợ thẻ object.
+      </object>
+    );
+  }
+
   // Add more conditions here for other file types
 
   return <div>Unsupported file type: {fileType}</div>;
