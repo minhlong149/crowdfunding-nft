@@ -26,27 +26,40 @@ export default function ContributedProjects() {
 
   return (
     <div>
-      <h2>Contributed Projects</h2>
-      <p>Projects you've contributed to</p>
+      <hgroup>
+        <h2>Contributed Projects</h2>
+        <p>Projects you've contributed to</p>
+      </hgroup>
       <table>
-        {data.map((project, index) => (
-          <tr key={index}>
-            <th>{project.name}</th>
-            <th>{project.owner}</th>
-            <th>{project.contributionAmount.toString()}</th>
-            <th>
-              {project.fund.toString()}/{project.goal.toString()}
-            </th>
-            <th>
-              <button
-                onClick={() => handleFundsWithdrawal(project.id)}
-                disabled={project.released}
-              >
-                Withdraw
-              </button>
-            </th>
+        <thead>
+          <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Owner</th>
+            <th scope="col">Contribution</th>
+            <th scope="col">Funded</th>
+            <th scope="col"></th>
           </tr>
-        ))}
+        </thead>
+        <tbody>
+          {data.map((project, index) => (
+            <tr key={index}>
+              <th>{project.name}</th>
+              <th>{project.owner}</th>
+              <th>{project.contributionAmount.toString()}</th>
+              <th>
+                {project.fund.toString()}/{project.goal.toString()}
+              </th>
+              <th>
+                <button
+                  onClick={() => handleFundsWithdrawal(project.id)}
+                  disabled={project.released}
+                >
+                  Withdraw
+                </button>
+              </th>
+            </tr>
+          ))}
+        </tbody>
       </table>
     </div>
   );

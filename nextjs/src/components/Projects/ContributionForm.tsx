@@ -18,8 +18,10 @@ export default function ProjectContributionForm(props: { projectId: bigint }) {
 
   return (
     <form onSubmit={addContribution}>
-      <input type="number" name={"contribution"} />
-      <button type="submit">Contribute</button>
+      <fieldset role="group">
+        <input type="number" name={"contribution"} />
+        <button type="submit">Contribute</button>
+      </fieldset>
 
       {error && <span>Error: {error.message}</span>}
     </form>

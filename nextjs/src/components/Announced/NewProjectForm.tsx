@@ -19,25 +19,25 @@ export default function NewProjectForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Announce new project</h2>
+      <h3>Create new project</h3>
 
-      <div>
-        <label htmlFor="projectName">Name: </label>
-        <input name="projectName" required type="text" />
+      <div className="grid">
+        <div>
+          <label htmlFor="projectName">Name: </label>
+          <input name="projectName" required type="text" />
+        </div>
+        <div>
+          <label htmlFor="projectGoal">Goal: </label>
+          <fieldset role="group">
+            <input name="projectGoal" required type="number" />
+            <button disabled={isPending} type="submit">
+              {isPending ? "Confirming..." : "Create"}
+            </button>
+          </fieldset>
+        </div>
       </div>
 
-      <div>
-        <label htmlFor="projectGoal">Goal: </label>
-        <input name="projectGoal" required type="number" />
-      </div>
-
-      <div>
-        <button disabled={isPending} type="submit">
-          {isPending ? "Confirming..." : "Mint"}
-        </button>
-
-        {error && <span>Error: {error.message}</span>}
-      </div>
+      <div>{error && <span>Error: {error.message}</span>}</div>
     </form>
   );
 }

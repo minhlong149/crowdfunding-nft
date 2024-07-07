@@ -33,7 +33,12 @@ export default function WithdrawProject() {
   // and display the amount they have contributed
   return (
     <div>
-      <button onClick={handleWithdraw} disabled={isPending}>
+      <p>Your contribution: {project.contributionAmount.toLocaleString()}</p>
+      <button
+        onClick={handleWithdraw}
+        disabled={isPending}
+        className="outline contrast"
+      >
         Withdraw
       </button>
       {error && <p>Error: {error.message}</p>}
