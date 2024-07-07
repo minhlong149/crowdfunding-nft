@@ -1,30 +1,42 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { NftAssetCid } from "@/lib/types";
+import { convertToGateway } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
 
-type NftAssetPropS = {
-  asset: NftAssetCid;
-};
+export default function NftAsset({ cid }: NftAssetCid) {
+  const url = convertToGateway(cid);
 
-export default function NftAsset({ asset }: NftAssetPropS) {
-  const [fileType, setFileType] = useState("");
+  const { data, status } = useQuery({
+    queryKey: ["nftFileType"],
+    queryFn: () => fetch(url),
+  });
 
-  useEffect(() => {
-    fetch(asset.cid)
-      .then((response) => response.headers.get("content-type"))
-      .then((type) => setFileType(type ?? ""));
-  }, [asset]);
+  if (status === "pending") {
+    return <span>Loading...</span>;
+  }
+
+  if (status === "error" || !data.ok) {
+    return <span>Failed to get the content of the file</span>;
+  }
+
+  const DefaultFileDisplay = () => (
+    <a href={url} target="_blank" rel="noopener noreferrer">
+      {cid}
+    </a>
+  );
+
+  const fileType = data.headers.get("content-type") || "";
 
   if (fileType.startsWith("image/")) {
-    return <img src={asset.cid} alt="NFT Asset" />;
+    return <img src={url} alt="NFT Asset" />;
   }
 
   if (fileType.startsWith("video/")) {
     return (
       <video controls>
-        <source src={asset.cid} type={fileType} />
-        Your browser does not support the video tag.
+        <source src={url} type={fileType} />
+        <DefaultFileDisplay />
       </video>
     );
   }
@@ -32,26 +44,19 @@ export default function NftAsset({ asset }: NftAssetPropS) {
   if (fileType.startsWith("audio/")) {
     return (
       <audio controls>
-        <source src={asset.cid} type={fileType} />
-        Trình duyệt của bạn không hỗ trợ thẻ audio.
+        <source src={url} type={fileType} />
+        <DefaultFileDisplay />
       </audio>
     );
   }
 
-  if (fileType === "application/pdf") {
+  if (fileType.startsWith("application/")) {
     return (
-      <object
-        data={asset.cid}
-        type="application/pdf"
-        width="100%"
-        height="600px"
-      >
-        Trình duyệt của bạn không hỗ trợ thẻ object.
+      <object data={url} type={fileType}>
+        <DefaultFileDisplay />
       </object>
     );
   }
 
-  // Add more conditions here for other file types
-
-  return <div>Unsupported file type: {fileType}</div>;
+  return <DefaultFileDisplay />;
 }

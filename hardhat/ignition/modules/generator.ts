@@ -14,7 +14,7 @@ export default buildModule("CrowdfundingNFT", (m) => {
         { account: m.getAccount(2), value: 4000n },
         { account: m.getAccount(3), value: 6000n },
       ],
-      url: "https://ipfs.io/ipfs/bafybeihkoviema7g3gxyt6la7vd5ho32ictqbilu3wnlo3rs7ewhnp7lly",
+      url: "QmfXZZSkiL39MqhY8asMYArKSkGukGoUz2n2mhjzNi69PZ",
     },
     {
       name: "Dyad Campaign",
