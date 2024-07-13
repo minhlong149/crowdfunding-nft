@@ -33,6 +33,46 @@ export default buildModule("CrowdfundingNFT", (m) => {
       contribution: [{ account: m.getAccount(1), value: 8000n }],
       url: "",
     },
+    {
+      name: "The Book Club",
+      goal: 8000n,
+      owner: m.getAccount(5),
+      contribution: [
+        { account: m.getAccount(3), value: 3500n },
+        { account: m.getAccount(1), value: 3200n },
+        { account: m.getAccount(2), value: 2200n },
+      ],
+      url: "QmTNt651QfMzEkq6rccZFoXjnPDfhp1DsQaZ6wrS7Qo9TZ",
+    },
+    {
+      name: "Cinematic Movie",
+      goal: 5000n,
+      owner: m.getAccount(3),
+      contribution: [
+        { account: m.getAccount(1), value: 2500n },
+        { account: m.getAccount(4), value: 1200n },
+        { account: m.getAccount(2), value: 1200n },
+        { account: m.getAccount(5), value: 200n },
+      ],
+      url: "QmdZW5Qm8A5UR3YJweSLi2DvkgYaaEVgYuKJGg8DRrYw3S",
+    },
+    {
+      name: "DJ Remix Playlist",
+      goal: 5000n,
+      owner: m.getAccount(4),
+      contribution: [
+        { account: m.getAccount(3), value: 2500n },
+        { account: m.getAccount(4), value: 4200n },
+      ],
+      url: "QmctqWgKvRknawNqjm3zuS9JVyL6oJAQhLyijMxYd1H2Xy",
+    },
+    {
+      name: "Secret Project",
+      goal: 300n,
+      owner: m.getAccount(1),
+      contribution: [{ account: m.getAccount(2), value: 300n }],
+      url: "QmctqWgKvRknawNqjm3zuS9JVyL6oJAQhLyijMxYd1H2Xy",
+    },
   ];
 
   projects.forEach((project, projectIndex) => {
