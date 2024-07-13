@@ -39,6 +39,9 @@ export default function ProjectDetails(props: { id: bigint }) {
 
       <ProjectContext.Provider value={projectContextValue}>
         <FundingProgress />
+
+        <p>{data.description}</p>
+
         <ContributionForm />
         <WithdrawProject />
         <ReleaseProject />

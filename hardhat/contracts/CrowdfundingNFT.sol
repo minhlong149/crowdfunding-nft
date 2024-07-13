@@ -21,6 +21,7 @@ error ProjectNotReleased();
 contract CrowdfundingNFT is ERC1155URIStorage {
     struct Project {
         string name;
+        string description;
         uint256 fund;
         uint256 goal;
         address owner;
@@ -35,6 +36,7 @@ contract CrowdfundingNFT is ERC1155URIStorage {
         string nftUri;
         bool ownsNft;
         string name;
+        string description;
         uint256 fund;
         uint256 goal;
         address owner;
@@ -89,9 +91,10 @@ contract CrowdfundingNFT is ERC1155URIStorage {
     /**
      * @notice Users can announce a new project and set a goal for it.
      */
-    function announceProject(string memory name, uint256 goal) external {
+    function announceProject(string memory name, string memory description, uint256 goal) external {
         _projects[_currentProjectIndex++] = Project({
             name: name,
+            description: description,
             fund: 0,
             goal: goal,
             owner: msg.sender,
@@ -210,6 +213,7 @@ contract CrowdfundingNFT is ERC1155URIStorage {
                 ownsNft: userOwnsNftOfProject(projectId),
                 contributionAmount: getContributionAmount(projectId),
                 name: _projects[projectId].name,
+                description: _projects[projectId].description,
                 fund: _projects[projectId].fund,
                 goal: _projects[projectId].goal,
                 owner: _projects[projectId].owner,

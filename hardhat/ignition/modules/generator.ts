@@ -8,6 +8,13 @@ export default buildModule("CrowdfundingNFT", (m) => {
   const projects = [
     {
       name: "Project Ace",
+      description: `
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Igitur ne dolorem quidem. Quae duo sunt, unum facit. Itaque contra est, ac dicitis; Duo Reges: constructio interrete. Nobis aliter videtur, recte secusne, postea; Et quod est munus, quod opus sapientiae? Erat enim res aperta.
+
+Scrupulum, inquam, abeunti; Erat enim Polemonis. Bork Non igitur bene. Sed virtutem ipsam inchoavit, nihil amplius.
+
+Quare conare, quaeso. Recte, inquit, intellegis. Ac tamen hic mallet non dolere. Bona autem corporis huic sunt, quod posterius posui, similiora.
+      `,
       goal: 10000n,
       owner: m.getAccount(1),
       contribution: [
@@ -18,6 +25,8 @@ export default buildModule("CrowdfundingNFT", (m) => {
     },
     {
       name: "Dyad Campaign",
+      description:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quicquid enim a sapientia proficiscitur, id continuo debet expletum esse omnibus suis partibus; Quis non odit sordidos, vanos, leves, futtiles? Quid igitur, inquit, eos responsuros putas? Intellegi quidem, ut propter aliam quampiam rem, verbi gratia propter voluptatem, nos amemus;",
       goal: 12000n,
       owner: m.getAccount(1),
       contribution: [
@@ -28,6 +37,8 @@ export default buildModule("CrowdfundingNFT", (m) => {
     },
     {
       name: "Nought Operation",
+      description:
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quicquid enim a sapientia proficiscitur, id continuo debet expletum esse omnibus suis partibus; Quis non odit sordidos, vanos, leves, futtiles? Quid igitur, inquit, eos responsuros putas? Intellegi quidem, ut propter aliam quampiam rem, verbi gratia propter voluptatem, nos amemus;",
       goal: 5000n,
       owner: m.getAccount(2),
       contribution: [{ account: m.getAccount(1), value: 8000n }],
@@ -35,6 +46,7 @@ export default buildModule("CrowdfundingNFT", (m) => {
     },
     {
       name: "The Book Club",
+      description: "",
       goal: 8000n,
       owner: m.getAccount(5),
       contribution: [
@@ -46,6 +58,7 @@ export default buildModule("CrowdfundingNFT", (m) => {
     },
     {
       name: "Cinematic Movie",
+      description: "",
       goal: 5000n,
       owner: m.getAccount(3),
       contribution: [
@@ -58,6 +71,7 @@ export default buildModule("CrowdfundingNFT", (m) => {
     },
     {
       name: "DJ Remix Playlist",
+      description: "",
       goal: 5000n,
       owner: m.getAccount(4),
       contribution: [
@@ -68,10 +82,11 @@ export default buildModule("CrowdfundingNFT", (m) => {
     },
     {
       name: "Secret Project",
+      description: "",
       goal: 300n,
       owner: m.getAccount(1),
       contribution: [{ account: m.getAccount(2), value: 300n }],
-      url: "QmctqWgKvRknawNqjm3zuS9JVyL6oJAQhLyijMxYd1H2Xy",
+      url: "QmfPzhYizxuta9WWjtzXYaJTAxqkCboTABS9SWHcUW6ydy",
     },
   ];
 
@@ -79,7 +94,7 @@ export default buildModule("CrowdfundingNFT", (m) => {
     const announceProject = m.call(
       crowdfundingNFT,
       "announceProject",
-      [project.name, project.goal],
+      [project.name, project.description, project.goal],
       {
         from: project.owner,
         id: `AnnounceProject_${projectIndex}`,

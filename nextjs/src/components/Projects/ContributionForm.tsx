@@ -11,8 +11,7 @@ interface ProjectContributionFormProps {
 export default function ProjectContributionForm(
   props: ProjectContributionFormProps,
 ) {
-  const { error, isPending, writeContract } =
-    useWriteCrowdfundingNftContributeToProject();
+  const { error, writeContract } = useWriteCrowdfundingNftContributeToProject();
 
   function addContribution(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -21,6 +20,8 @@ export default function ProjectContributionForm(
     const contribution = formData.get("contribution") as string;
 
     writeContract({ args: [props.id], value: BigInt(contribution) });
+
+    e.currentTarget.reset();
   }
 
   return (
