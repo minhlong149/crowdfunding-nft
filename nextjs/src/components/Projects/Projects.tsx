@@ -24,7 +24,7 @@ export default function Projects() {
           <th>Name</th>
           <th>Owner</th>
           <th>Fund/Goal</th>
-          {isConnected ? <th>Contribute</th> : <></>}
+          <th>{isConnected ? "Contribute" : "Status"}</th>
         </tr>
       </thead>
       <tbody>
@@ -37,13 +37,15 @@ export default function Projects() {
             <th>
               {project.fund.toString()}/{project.goal.toString()}
             </th>
-            {isConnected ? (
-              <th>
-                <ProjectContributionForm projectId={project.id} />
-              </th>
-            ) : (
-              <></>
-            )}
+            <th>
+              {isConnected ? (
+                <ProjectContributionForm {...project} />
+              ) : project.released ? (
+                "Closed"
+              ) : (
+                "Open"
+              )}
+            </th>
           </tr>
         ))}
       </tbody>

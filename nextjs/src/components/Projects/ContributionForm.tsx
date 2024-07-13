@@ -3,7 +3,14 @@
 import { FormEvent } from "react";
 import { useWriteCrowdfundingNftContributeToProject } from "@/lib/contracts";
 
-export default function ProjectContributionForm(props: { projectId: bigint }) {
+interface ProjectContributionFormProps {
+  id: bigint;
+  released: boolean;
+}
+
+export default function ProjectContributionForm(
+  props: ProjectContributionFormProps,
+) {
   const { error, isPending, writeContract } =
     useWriteCrowdfundingNftContributeToProject();
 
@@ -13,13 +20,13 @@ export default function ProjectContributionForm(props: { projectId: bigint }) {
     const formData = new FormData(e.currentTarget);
     const contribution = formData.get("contribution") as string;
 
-    writeContract({ args: [props.projectId], value: BigInt(contribution) });
+    writeContract({ args: [props.id], value: BigInt(contribution) });
   }
 
   return (
     <form onSubmit={addContribution}>
-      <fieldset role="group">
-        <input type="number" name={"contribution"} />
+      <fieldset role="group" disabled={props.released}>
+        <input type="number" name="contribution" required min="1" />
         <button type="submit">Contribute</button>
       </fieldset>
 
