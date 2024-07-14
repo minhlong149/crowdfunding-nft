@@ -48,8 +48,9 @@ export default function ContributionForm() {
           name="contribution"
           placeholder="Contribute amount"
           required
+          min="1"
         />
-        <input type="submit" value="Fund" disabled={isPending}/>
+        <input type="submit" value="Fund" disabled={isPending} />
       </fieldset>
 
       {error && <p>Error: {error.message}</p>}

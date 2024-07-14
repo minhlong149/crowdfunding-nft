@@ -1,3 +1,8 @@
 @use "@picocss/pico/scss/pico" with (
   $theme-color: "blue"
 );
+
+table {
+  table-layout: auto;
+  width: 100%;
+}

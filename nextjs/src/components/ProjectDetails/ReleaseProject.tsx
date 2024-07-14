@@ -2,6 +2,8 @@
 
 import { ProjectContext } from "@/lib/context";
 import { useWriteCrowdfundingNftReleaseProject } from "@/lib/contracts";
+import { NftAssetCid } from "@/lib/types";
+import { isValidCid } from "@/lib/utils";
 import { FormEvent, useContext, useEffect, useState } from "react";
 import { useAccount } from "wagmi";
 import NftAsset from "./NftAsset";
@@ -12,7 +14,8 @@ export default function ReleaseProject() {
   const { writeContract, data, error, isPending } =
     useWriteCrowdfundingNftReleaseProject();
 
-  const [useFileUpload, setUseFileUpload] = useState(false);
+  const [useFileUpload, setUseFileUpload] = useState<boolean>(false);
+  const [cidPath, setCidPath] = useState<string | null>(null);
 
   useEffect(() => {
     if (!error) {
@@ -21,7 +24,7 @@ export default function ReleaseProject() {
   }, [data]);
 
   if (project.released) {
-    return <NftAsset />;
+    return <NftAsset cid={project.nftUri} />;
   }
 
   if (address !== project.owner) {
@@ -42,18 +45,41 @@ export default function ReleaseProject() {
       assetUri = await uploadFile(assetUri);
     }
 
-    // TODO: Check if the asset URI is a valid IPFS CID
-
     writeContract({ args: [project.id, assetUri] });
 
-    e.currentTarget.reset();
+    setCidPath(null);
+    e.currentTarget?.reset();
   }
 
   async function uploadFile(file: File): Promise<string> {
-    // TODO: Send a POST request to the IPFS API to upload the file
-    //  The API will return the CID of the uploaded file
-    return "bafybeicn7i3soqdgr7dwnrwytgq4zxy7a5jpkizrvhm5mv6bgjd32wm3q4/welcome-to-IPFS.jpg";
+    try {
+      const fileToUpload = new FormData();
+      fileToUpload.set("file", file);
+      const response = await fetch("/api/ipfs", {
+        method: "POST",
+        body: fileToUpload,
+      });
+      if (!response.ok) {
+        throw new Error();
+      }
+      const data: NftAssetCid = await response.json();
+      return data.cid;
+    } catch (error) {
+      console.error(error);
+      return "";
+    }
   }
+
+  const cidPathIsInvalid =
+    cidPath === null || useFileUpload
+      ? undefined // Don't show error if file upload is used
+      : !isValidCid(cidPath);
+
+  const updatePathIfInputIsText = (e: FormEvent<HTMLInputElement>) => {
+    if (!useFileUpload) {
+      setCidPath(e.currentTarget.value);
+    }
+  };
 
   return (
     <form onSubmit={handleRelease}>
@@ -61,11 +87,18 @@ export default function ReleaseProject() {
       <fieldset role="group">
         <input
           type={useFileUpload ? "file" : "text"}
+          aria-invalid={cidPathIsInvalid}
+          onChange={updatePathIfInputIsText}
           name="assetUri"
-          placeholder="URI of the project's asset"
+          placeholder="CID of the project's asset"
           required
         />
-        <input type="submit" value="Release" disabled={isPending} />
+
+        <input
+          type="submit"
+          value="Release"
+          disabled={isPending || cidPathIsInvalid}
+        />
       </fieldset>
 
       <fieldset>
@@ -75,6 +108,7 @@ export default function ReleaseProject() {
             role="switch"
             checked={useFileUpload}
             onChange={() => setUseFileUpload(!useFileUpload)}
+            disabled={isPending}
           />
           I want to upload a file
         </label>

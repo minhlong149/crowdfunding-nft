@@ -3,9 +3,11 @@
 import ProjectContributionForm from "@/components/Projects/ContributionForm";
 import { useReadCrowdfundingNftGetProjects } from "@/lib/contracts";
 import Link from "next/link";
+import { useAccount } from "wagmi";
 
 export default function Projects() {
   const { data, error, isPending } = useReadCrowdfundingNftGetProjects();
+  const { isConnected } = useAccount();
 
   if (isPending) {
     return <p>Loading...</p>;
@@ -16,9 +18,16 @@ export default function Projects() {
   }
 
   return (
-    <div>
-      <h2>All projects</h2>
-      <table>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Owner</th>
+          <th>Fund/Goal</th>
+          <th>{isConnected ? "Contribute" : "Status"}</th>
+        </tr>
+      </thead>
+      <tbody>
         {data.map((project) => (
           <tr key={project.id}>
             <th>
@@ -29,11 +38,17 @@ export default function Projects() {
               {project.fund.toString()}/{project.goal.toString()}
             </th>
             <th>
-              <ProjectContributionForm projectId={project.id} />
+              {isConnected ? (
+                <ProjectContributionForm {...project} />
+              ) : project.released ? (
+                "Closed"
+              ) : (
+                "Open"
+              )}
             </th>
           </tr>
         ))}
-      </table>
-    </div>
+      </tbody>
+    </table>
   );
 }

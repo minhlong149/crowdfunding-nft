@@ -44,23 +44,26 @@ export default function TransactionHistory() {
   }
 
   return (
-    <table>
-      <thead>
-        <tr>
-          <th scope="col">Contributor</th>
-          <th scope="col">Amount</th>
-          <th scope="col">Transaction Hash</th>
-        </tr>
-      </thead>
-      <tbody>
-        {transactions.map((transaction) => (
-          <tr key={transaction.transactionHash}>
-            <td>{transaction.args.contributor}</td>
-            <td>{transaction.args.amount?.toLocaleString()} ETH</td>
-            <td>{transaction.transactionHash}</td>
+    <>
+      <h3>Contributions</h3>
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Contributor</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Transaction Hash</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {transactions.map((transaction) => (
+            <tr key={transaction.transactionHash}>
+              <td>{transaction.args.contributor}</td>
+              <td>{transaction.args.amount?.toLocaleString()} ETH</td>
+              <td>{transaction.transactionHash}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </>
   );
 }

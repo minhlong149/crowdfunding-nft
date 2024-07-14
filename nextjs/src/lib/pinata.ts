@@ -1,3 +1,5 @@
+import axios from "axios";
+
 const BASE_URL = "https://api.pinata.cloud";
 
 type PinFileResponse = {
@@ -12,15 +14,17 @@ export async function pinFile(file: File): Promise<string> {
   formData.append("file", file);
   formData.append("pinataMetadata", JSON.stringify({ name: file.name }));
 
-  const response = await fetch(`${BASE_URL}/pinning/pinFileToIPFS`, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${process.env.PINATA_JWT}`,
-      ContentType: "multipart/form-data",
+  const response = await axios.post(
+    `${BASE_URL}/pinning/pinFileToIPFS`,
+    formData,
+    {
+      headers: {
+        Authorization: `Bearer ${process.env.PINATA_JWT}`,
+        ContentType: "multipart/form-data",
+      },
     },
-    body: formData,
-  });
+  );
 
-  const { IpfsHash } = (await response.json()) as PinFileResponse;
+  const { IpfsHash } = response.data as PinFileResponse;
   return IpfsHash;
 }

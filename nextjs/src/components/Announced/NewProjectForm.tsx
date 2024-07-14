@@ -12,32 +12,39 @@ export default function NewProjectForm() {
 
     const formData = new FormData(e.currentTarget);
     const name = formData.get("projectName") as string;
+    const desc = formData.get("projectDesc") as string;
     const goal = formData.get("projectGoal") as string;
 
-    writeContract({ args: [name, BigInt(goal)] });
+    writeContract({ args: [name, desc, BigInt(goal)] });
+
+    e.currentTarget.reset();
   }
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Announce new project</h2>
+      <h3>Create new project</h3>
 
       <div>
-        <label htmlFor="projectName">Name: </label>
+        <label htmlFor="projectName">Name:</label>
         <input name="projectName" required type="text" />
       </div>
 
       <div>
-        <label htmlFor="projectGoal">Goal: </label>
-        <input name="projectGoal" required type="number" />
+        <label htmlFor="projectDesc">Description:</label>
+        <textarea name="projectDesc"></textarea>
       </div>
 
       <div>
-        <button disabled={isPending} type="submit">
-          {isPending ? "Confirming..." : "Mint"}
-        </button>
-
-        {error && <span>Error: {error.message}</span>}
+        <label htmlFor="projectGoal">Goal:</label>
+        <fieldset role="group">
+          <input name="projectGoal" required type="number" />
+          <button disabled={isPending} type="submit">
+            {isPending ? "Confirming..." : "Create"}
+          </button>
+        </fieldset>
       </div>
+
+      <div>{error && <span>Error: {error.message}</span>}</div>
     </form>
   );
 }

@@ -3,9 +3,15 @@
 import { FormEvent } from "react";
 import { useWriteCrowdfundingNftContributeToProject } from "@/lib/contracts";
 
-export default function ProjectContributionForm(props: { projectId: bigint }) {
-  const { error, isPending, writeContract } =
-    useWriteCrowdfundingNftContributeToProject();
+interface ProjectContributionFormProps {
+  id: bigint;
+  released: boolean;
+}
+
+export default function ProjectContributionForm(
+  props: ProjectContributionFormProps,
+) {
+  const { error, writeContract } = useWriteCrowdfundingNftContributeToProject();
 
   function addContribution(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -13,13 +19,17 @@ export default function ProjectContributionForm(props: { projectId: bigint }) {
     const formData = new FormData(e.currentTarget);
     const contribution = formData.get("contribution") as string;
 
-    writeContract({ args: [props.projectId], value: BigInt(contribution) });
+    writeContract({ args: [props.id], value: BigInt(contribution) });
+
+    e.currentTarget.reset();
   }
 
   return (
     <form onSubmit={addContribution}>
-      <input type="number" name={"contribution"} />
-      <button type="submit">Contribute</button>
+      <fieldset role="group" disabled={props.released}>
+        <input type="number" name="contribution" required min="1" />
+        <button type="submit">Contribute</button>
+      </fieldset>
 
       {error && <span>Error: {error.message}</span>}
     </form>
